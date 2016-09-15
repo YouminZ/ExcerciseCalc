@@ -35,23 +35,44 @@ public class Main {
 
         while( (line = bufferedReader.readLine()) != null){
             field = line.split(" ");                        //tokenize array of a line from the text
-            if(Float.valueOf(field[0]) >= 0.0 && Float.valueOf(field[1]) >= 0.0){
-                counter++;
-                totalMiles += Float.valueOf(field[0]);
-                totalCals += Float.valueOf(field[1]);
+            if(field.length == 2) {
+                if (Float.valueOf(field[0]) >= 0.0 && Float.valueOf(field[1]) >= 0.0) {
+                    counter++;
+                    totalMiles += Float.valueOf(field[0]);
+                    totalCals += Float.valueOf(field[1]);
+                } else {
+                    counter++;
+                    System.out.println("Negative value detected on line " + counter + " of the text file.");
+                }//end nested if statement
+            }
+            else if(field.length == 3){
+                if (Float.valueOf(field[1]) >= 0.0 && Float.valueOf(field[2]) >= 0.0) {
+                    counter++;
+                    totalMiles += Float.valueOf(field[1]);
+                    totalCals += Float.valueOf(field[2]);
+                } else {
+                    counter++;
+                    System.out.println("Negative value detected on line " + counter + " of the text file.");
+                }//end nested else if statement
             }
             else{
-                counter++;
-                System.out.println("Negative value detected on line " + counter + " of the text file.");
-            }
+                System.out.println("Line " + (counter+1) + " does not match database pattern, skipped line");
+                continue;
+            }//end if statement @param field.length
         }//end while loop
 
         System.out.println("Your total workout data is: " + rounding(totalMiles)+ " Miles | " + rounding(totalCals) + " Calories | " + counter + " Number of Workouts.");
         System.out.println("The average per day is: " + rounding(totalMiles/counter) + " miles | " + rounding(totalCals/counter) + " calories.");
 
         bufferedReader.close();                             //closes the buffer reader
-    }
+    }//end readFile
 
+    /**
+     * Simple rounding utility method
+     *
+     * @param n takes in float value
+     * @return returns rounded double value
+     */
     public static double rounding(float n){
         double rounded = Math.round(n*100.0)/100.0;
         return rounded;
